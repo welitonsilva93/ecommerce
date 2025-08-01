@@ -30,7 +30,13 @@ def detalhes_produto(request, produto_id):
                 item.quantidade += quantidade
                 item.save()
 
-            return redirect('ver_carrinho')
+            return redirect('carrinho')
         
     context = {'produto': produto, 'form': form}
     return render(request, 'app_loja/details.html', context)
+
+def ver_carrinho(request):
+    carrinho = ItemCarrinho.objects.filter(carrinho__usuario=request.user)
+    total = sum(item.produto.price * item.quantidade for item in carrinho)
+    context = {'carrinho': carrinho, 'total': total}
+    return render(request, 'app_loja/carrinho.html', context)
