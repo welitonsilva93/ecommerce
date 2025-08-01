@@ -29,6 +29,8 @@
             <li><button class="dropdown-item" type="button">{{ categoria.title }}</button></li>
             {% endfor %}
         </ul>
+        <a class="btn carrinho" href="{% url 'carrinho' %}">🛒</a>
+
         </div>
     </div>
     </header>
@@ -41,7 +43,7 @@
                     <p><strong>{{ produto.title }}</strong></p>
                     <img src="{{ produto.image.url }}" alt="imagem nao encontrada">
                     <p class="preco"><strong>R${{ produto.price|floatformat:2 }}</strong></p>
-                    <a href="#" class="btn btn-primary comprar">Comprar</a>
+                    <a href="{% url 'produto' produto_id=produto.id %}" class="btn btn-primary comprar">Comprar</a>
                 </div>
             {% endfor %}
         </div>
