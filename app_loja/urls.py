@@ -2,10 +2,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from .views import home
+from .views import home, detalhes_produto
 
 urlpatterns = [
-    path('home/', home, name='home')
+    path('home/', home, name='home'), 
+    path('produto/<int:produto_id>/', detalhes_produto, name='produto')
 ] 
 
 if settings.DEBUG:
