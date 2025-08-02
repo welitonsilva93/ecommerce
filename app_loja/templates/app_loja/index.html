@@ -25,8 +25,8 @@
             Categorias
         </button>
         <ul class="dropdown-menu">
-            {% for categoria in categorias %}
-            <li><button class="dropdown-item" type="button">{{ categoria.title }}</button></li>
+            {% for categoria in lista_categorias %}
+            <li><a class="dropdown-item" type="button" href="{% url 'home' categoria.id %}">{{ categoria.title }}</a></li>
             {% endfor %}
         </ul>
         <a class="btn carrinho" href="{% url 'carrinho' %}">🛒</a>
@@ -35,12 +35,12 @@
     </div>
     </header>
 
-    <div class='container'>
+    <div class='container mb-5'>
         <h2 class="text-center my-4" style="font-family: 'Segoe UI', sans-serif; font-weight: 600;">Produtos em Destaque</h2>
         <div class="row"> 
             {% for produto in produtos %}
                 <div class="col-md-4 produto-card">
-                    <p><strong>{{ produto.title }}</strong></p>
+                    <p class="produto-nome">{{ produto.title }}</p>
                     <img src="{{ produto.image.url }}" alt="imagem nao encontrada">
                     <p class="preco"><strong>R${{ produto.price|floatformat:2 }}</strong></p>
                     <a href="{% url 'produto' produto_id=produto.id %}" class="btn btn-primary comprar">Comprar</a>
