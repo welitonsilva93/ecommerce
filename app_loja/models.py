@@ -9,8 +9,8 @@ class Categoria(models.Model):
         return self.title
 
 class Produtos(models.Model):
-    title = models.CharField(max_length=20)
-    description = models.TextField(max_length=200)
+    title = models.CharField(max_length=50)
+    description = models.TextField(max_length=600)
     price = models.FloatField()
     category = models.ForeignKey(Categoria, on_delete=models.PROTECT)
     image = models.ImageField(upload_to='product_images')

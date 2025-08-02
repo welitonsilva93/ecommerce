@@ -1,12 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from .forms import AdicionarCarrinhoForm
+from django.contrib import messages
 
-def home(request):
-    produtos = Produtos.objects.all()
-    categorias = Categoria.objects.all()
+def home(request, categoria_id):
 
-    return render(request, 'app_loja/index.html', context= {'produtos': produtos, 'categorias': categorias})
+    categorias = get_object_or_404(Categoria, id=categoria_id)
+    produtos = Produtos.objects.filter(category=categorias)
+    lista_categorias = Categoria.objects.all()
+
+    return render(request, 'app_loja/index.html', context= {'produtos': produtos, 'categorias': categorias, 'lista_categorias': lista_categorias})
+
 
 
 def detalhes_produto(request, produto_id):
@@ -35,8 +39,30 @@ def detalhes_produto(request, produto_id):
     context = {'produto': produto, 'form': form}
     return render(request, 'app_loja/details.html', context)
 
+
 def ver_carrinho(request):
     carrinho = ItemCarrinho.objects.filter(carrinho__usuario=request.user)
     total = sum(item.produto.price * item.quantidade for item in carrinho)
     context = {'carrinho': carrinho, 'total': total}
     return render(request, 'app_loja/carrinho.html', context)
+
+
+def remover_item_carrinho(request, produto_id):
+    produto = get_object_or_404(Produtos, pk=produto_id)
+    
+    try:
+        carrinho = Carrinho.objects.get(usuario=request.user)
+    except Carrinho.DoesNotExist:
+        messages.error(request, "Carrinho não encontrado.")
+        return redirect('carrinho')
+
+    try:
+        item = ItemCarrinho.objects.get(carrinho=carrinho, produto=produto)
+        
+        if request.method == 'POST':
+            item.delete()
+            messages.success(request, "Item removido com sucesso.")
+    except ItemCarrinho.DoesNotExist:
+        messages.warning(request, "Item não estava no carrinho.")
+
+    return redirect('carrinho')
