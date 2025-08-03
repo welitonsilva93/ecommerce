@@ -115,3 +115,22 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   font-size: 20px;
 }
+
+
+.usuario-info .dropdown-toggle {
+  font-size: 0.95rem;
+  border-radius: 8px;
+  padding: 6px 12px;
+  background-color: white;
+  border: 1px solid #ccc;
+  transition: background 0.3s ease;
+  color: #072340;
+}
+
+.usuario-info .dropdown-toggle:hover {
+  background-color: #ecf5ff;
+}
+
+.usuario-info .dropdown-menu {
+  font-size: 0.9rem;
+}

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Listar Produtos</title>
+  <title>Geral Produtos</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'app_loja/css/style.css' %}" />
@@ -65,23 +65,11 @@
         <input class="form-control me-2" type="search" placeholder="Buscar produtos..." aria-label="Buscar" />
         <button class="btn btn-outline-primary" type="submit">Buscar</button>
       </form>
-      <div class="d-flex align-items-center">
-        <div class="dropdown me-3">
-          <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Categorias
-          </button>
-          <ul class="dropdown-menu">
-            {% for categoria in lista_categorias %}
-            <li>
-              <a class="dropdown-item {% if categorias and categorias.id == categoria.id %}active{% endif %}" 
-                 href="{% url 'home' categoria.id %}">
-                {{ categoria.title }}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
 
+        <div class="d-flex align-items-center">
+          <a href="{% url 'home' 1 %}" class="btn btn-outline-secondary">Produtos por Categ. →</a>
+        </div>
+        
         <a class="btn carrinho me-3" href="{% url 'carrinho' %}">🛒</a>
 
         {% if request.user.is_authenticated %}
@@ -101,25 +89,13 @@
         {% else %}
         <a href="{% url 'login' %}" class="login-btn">Entrar</a>
         {% endif %}
-        
       </div>
     </div>
   </header>
 
   <div class="container mb-5">
-    
-    <div class="d-flex justify-content-start mb-3">
-    <a href="{% url 'home_geral' %}" class="btn btn-outline-secondary">
-        ← Voltar para Geral
-    </a>
-    </div>
-
     <h2 class="text-center my-4" style="font-family: 'Segoe UI', sans-serif; font-weight: 600;">
-      {% if categorias %}
-        Produtos da categoria: {{ categorias.title }}
-      {% else %}
-        Produtos em Destaque
-      {% endif %}
+        Produtos Geral
     </h2>
 
     <div class="row">
