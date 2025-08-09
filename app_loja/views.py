@@ -5,15 +5,26 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 def home_geral(request):
-    categorias = Categoria.objects.all()
+    termo_busca = request.GET.get('buscar_produtos')
     produtos = Produtos.objects.all().order_by('title')
+
+    if termo_busca:
+        produtos = produtos.filter(title__icontains=termo_busca)
+
+
+    categorias = Categoria.objects.all()
+
 
     return render(request, 'app_loja/home.html', context= {'produtos': produtos, 'categorias': categorias})
 
 def home(request, categoria_id):
-
+    termo_busca = request.GET.get('buscar_produtos')
     categorias = get_object_or_404(Categoria, id=categoria_id)
     produtos = Produtos.objects.filter(category=categorias)
+    
+    if termo_busca:
+        produtos = produtos.filter(title__icontains=termo_busca)
+
     lista_categorias = Categoria.objects.all()
 
     return render(request, 'app_loja/index.html', context= {'produtos': produtos, 'categorias': categorias, 'lista_categorias': lista_categorias})
