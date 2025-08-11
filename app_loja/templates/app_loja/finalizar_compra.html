@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finalizar Compra</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'app_loja/css/style.css' %}" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    .checkout-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .checkout-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .payment-method {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .payment-method:hover {
+      border-color: #0d6efd;
+      background: #f8f9fa;
+    }
+    .payment-fields {
+      display: none;
+      padding: 15px;
+      border-left: 3px solid #0d6efd;
+      background: #f8f9fa;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    .cart-summary {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 15px;
+      background: #f8f9fa;
+    }
+    .cart-summary h5 {
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .finalize-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header igual ao do site -->
+  <header class="bg-light border-bottom py-3 mb-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center">
+      <h1 class="logo m-0">W.S <span>ECOMMERCE</span></h1>
+      <a href="{% url 'carrinho' %}" class="btn btn-outline-secondary">← Voltar ao Carrinho</a>
+    </div>
+  </header>
+
+  <div class="container mb-5">
+    <div class="checkout-container">
+      <h2 class="checkout-title">Finalizar Compra</h2>
+
+      <div class="row">
+        <!-- Coluna de pagamento -->
+        <div class="col-md-8">
+          <h5>Endereço de Entrega</h5>
+          <form class="mb-4">
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Rua, número, complemento" required>
+            </div>
+            <div class="mb-3 d-flex gap-2">
+              <input type="text" class="form-control" placeholder="Cidade" required>
+              <input type="text" class="form-control" placeholder="Estado" required>
+              <input type="text" class="form-control" placeholder="CEP" required>
+            </div>
+            <div class="mb-3 d-flex gap-2">
+              <input type="text" class="form-control" placeholder="País" required>
+              <button type="button" class="btn btn-outline-primary">Calcular Frete</button>
+            </div>
+          </form>
+
+          <h5>Forma de Pagamento</h5>
+
+          <!-- Opção Cartão -->
+          <div class="payment-method" onclick="showPayment('card')">
+            <strong>💳 Cartão de Crédito/Débito</strong>
+            <div id="payment-card" class="payment-fields">
+              <input type="text" class="form-control mb-2" placeholder="Número do cartão">
+              <div class="d-flex gap-2">
+                <input type="text" class="form-control" placeholder="Validade (MM/AA)">
+                <input type="text" class="form-control" placeholder="CVV">
+              </div>
+              <input type="text" class="form-control mt-2" placeholder="Nome impresso no cartão">
+            </div>
+          </div>
+
+          <!-- Opção Pix -->
+          <div class="payment-method" onclick="showPayment('pix')">
+            <strong>⚡ Pix</strong>
+            <div id="payment-pix" class="payment-fields">
+              <p>Ao finalizar, será gerado um QR Code para pagamento via Pix.</p>
+            </div>
+          </div>
+
+          <!-- Opção Boleto -->
+          <div class="payment-method" onclick="showPayment('boleto')">
+            <strong>🧾 Boleto Bancário</strong>
+            <div id="payment-boleto" class="payment-fields">
+              <p>O boleto será gerado e enviado para o seu e-mail cadastrado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna do resumo -->
+        <div class="col-md-4">
+          <div class="cart-summary">
+            <h5>Resumo da Compra</h5>
+            {% for item in carrinho %}
+            <div class="d-flex justify-content-between">
+              <span>{{ item.produto.title }} (x{{ item.quantidade }})</span>
+              <span>R${{ item.subtotal|floatformat:2 }}</span>
+            </div>
+            {% endfor %}
+            <hr>
+            <div class="d-flex justify-content-between fw-bold">
+              <span>Total:</span>
+              <span>R${{ total|floatformat:2 }}</span>
+            </div>
+          </div>
+          <form method='post' action="{% url 'finalizacao' %}">
+            {% csrf_token %}
+            <button class="btn btn-primary finalize-btn mt-3">Finalizar Compra</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPayment(method) {
+      document.querySelectorAll('.payment-fields').forEach(el => el.style.display = 'none');
+      document.getElementById(`payment-${method}`).style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

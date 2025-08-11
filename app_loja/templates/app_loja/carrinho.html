@@ -139,7 +139,7 @@
       <div class="resumo-carrinho">
         <h4>Resumo da Compra</h4>
         <p class="mb-2">Total: <strong>R${{ total|floatformat:2 }}</strong></p>
-        <a href="#" class="btn btn-success mt-3">Finalizar Compra</a>
+        <a href="{% url 'finalizar_compra' %}" class="btn btn-success mt-3">Finalizar Compra</a>
       </div>
     </div>
     {% else %}

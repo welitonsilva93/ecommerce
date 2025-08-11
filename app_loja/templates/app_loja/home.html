@@ -68,7 +68,7 @@
       </form>
 
         <div class="d-flex align-items-center">
-          <a href="{% url 'home' 1 %}" class="btn btn-outline-secondary">Produtos por Categ. →</a>
+          <a href="{% url 'minhas_compras' %}" class="btn btn-outline-secondary">Minhas Compras</a>
         </div>
         
         <a class="btn carrinho me-3" href="{% url 'carrinho' %}">🛒</a>
@@ -98,6 +98,10 @@
     <h2 class="text-center my-4" style="font-family: 'Segoe UI', sans-serif; font-weight: 600;">
         Produtos Geral
     </h2>
+    
+    <div class="d-flex justify-content-end mb-3">
+      <a href="{% url 'home' 1 %}" class="btn btn-outline-secondary">Produtos por Categ. →</a>
+    </div>
 
     <div class="row">
       {% for produto in produtos %}

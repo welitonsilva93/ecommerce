@@ -20,8 +20,8 @@ def home_geral(request):
 def home(request, categoria_id):
     termo_busca = request.GET.get('buscar_produtos')
     categorias = get_object_or_404(Categoria, id=categoria_id)
-    produtos = Produtos.objects.filter(category=categorias)
-    
+    produtos = Produtos.objects.filter(category=categorias).order_by('-price')
+
     if termo_busca:
         produtos = produtos.filter(title__icontains=termo_busca)
 
@@ -84,3 +84,37 @@ def remover_item_carrinho(request, produto_id):
         messages.warning(request, "Item não estava no carrinho.")
 
     return redirect('carrinho')
+
+def finalizar_compra(request):
+    carrinho = ItemCarrinho.objects.filter(carrinho__usuario=request.user)
+    total = sum(item.produto.price * item.quantidade for item in carrinho)
+    context = {'carrinho': carrinho, 'total': total}
+    return render(request, 'app_loja/finalizar_compra.html', context)
+
+def finalizacao(request):
+    carrinho = ItemCarrinho.objects.filter(carrinho__usuario=request.user)
+    item_compras = ItemCompra.objects.all()
+
+    if request.method == 'POST':
+        created = Compras.objects.create(
+            usuario = request.user,
+            valor_total = sum(item.produto.price * item.quantidade for item in carrinho) 
+        )
+        for itens in carrinho:
+            ItemCompra.objects.create(
+                produto = itens.produto,
+                compra = created,
+                quantidade = itens.quantidade,
+            )
+        carrinho.delete()
+
+        return redirect('carrinho')
+    return render(request, 'app_loja/finalizar_compra.html')
+
+def minhas_compras(request):
+    item_comprado = ItemCompra.objects.filter(compra__usuario=request.user)
+    compras = Compras.objects.filter(usuario=request.user)
+
+    context = {'item_comprado':item_comprado, 'compras':compras}
+
+    return render(request, 'app_loja/minhas_compras.html', context)

@@ -36,3 +36,17 @@ class ItemCarrinho(models.Model):
     def __str__(self):
         return f"{self.quantidade}x {self.produto.title}"
 
+
+
+
+class Compras(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    data = models.DateTimeField(auto_now_add=True)
+    valor_total = models.FloatField()
+    
+
+class ItemCompra(models.Model):
+    produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
+    compra = models.ForeignKey(Compras, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField()
+
