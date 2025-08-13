@@ -3,6 +3,7 @@ from .models import *
 from .forms import AdicionarCarrinhoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from time import sleep
 
 def home_geral(request):
     termo_busca = request.GET.get('buscar_produtos')
@@ -72,6 +73,7 @@ def remover_item_carrinho(request, produto_id):
         carrinho = Carrinho.objects.get(usuario=request.user)
     except Carrinho.DoesNotExist:
         messages.error(request, "Carrinho não encontrado.")
+        sleep(3.5)
         return redirect('carrinho')
 
     try:
@@ -82,7 +84,7 @@ def remover_item_carrinho(request, produto_id):
             messages.success(request, "Item removido com sucesso.")
     except ItemCarrinho.DoesNotExist:
         messages.warning(request, "Item não estava no carrinho.")
-
+    sleep(3.5)
     return redirect('carrinho')
 
 def finalizar_compra(request):
@@ -107,7 +109,7 @@ def finalizacao(request):
                 quantidade = itens.quantidade,
             )
         carrinho.delete()
-
+        sleep(3.5)
         return redirect('carrinho')
     return render(request, 'app_loja/finalizar_compra.html')
 

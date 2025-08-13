@@ -10,7 +10,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
   <link rel="stylesheet" href="{% static 'app_loja/css/style.css' %}" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .carrinho-container {
       display: flex;
@@ -129,7 +129,7 @@
             <p>{{ item.quantidade }}x - R${{ item.produto.price|floatformat:2 }}</p>
             <form method="post" action="{% url 'remover_item' item.produto.id %}">
               {% csrf_token %}
-              <button type="submit" class="btn btn-sm btn-outline-danger">Remover</button>
+              <button type="submit" class="btn btn-sm btn-outline-danger" onclick="mostrarPopup()">Remover</button>
             </form>
           </div>
         </div>
@@ -146,5 +146,24 @@
     <p class="text-center text-muted mt-5">Seu carrinho está vazio.</p>
     {% endif %}
   </div>
+
+  <script>
+    function mostrarPopup() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Item removido com sucesso!',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#4CAF50',
+        background: '#fefefe',
+        color: '#333',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      });
+    }
+  </script>
 </body>
 </html>
