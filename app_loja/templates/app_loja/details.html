@@ -28,12 +28,15 @@
                 <img src="{{ produto.image.url }}" alt="{{ produto.title }}" class="img-fluid rounded shadow-sm mb-3" style="max-height: 400px;">
                 <p class="mb-3">{{ produto.description }}</p>
                 <p class="preco fs-4 fw-semibold text-primary">R${{ produto.price|floatformat:2 }}</p>
-
+                {% if request.user.is_authenticated %}
                 <form method="post" class="d-flex justify-content-center align-items-center gap-2 mt-3">
                     {% csrf_token %}
                     <input type="number" name="{{ form.quantidade.name }}" id="{{ form.quantidade.id_for_label }}" min="1" value="1" class="form-control w-25">
                     <button type="submit" class="btn btn-primary">Adicionar ao Carrinho</button>
                 </form>
+                {% else %}
+                <a class="btn btn-outline-secondary mt-4" href="{% url 'login' %}">Para adicionar produtos ao carrinho faça login no site!</a>
+                {% endif %}
             </div>
         </div>
     </div>

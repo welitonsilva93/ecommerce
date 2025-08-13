@@ -87,12 +87,14 @@ def remover_item_carrinho(request, produto_id):
     sleep(3.5)
     return redirect('carrinho')
 
+@login_required 
 def finalizar_compra(request):
     carrinho = ItemCarrinho.objects.filter(carrinho__usuario=request.user)
     total = sum(item.produto.price * item.quantidade for item in carrinho)
     context = {'carrinho': carrinho, 'total': total}
     return render(request, 'app_loja/finalizar_compra.html', context)
 
+@login_required 
 def finalizacao(request):
     carrinho = ItemCarrinho.objects.filter(carrinho__usuario=request.user)
     item_compras = ItemCompra.objects.all()
@@ -113,6 +115,7 @@ def finalizacao(request):
         return redirect('carrinho')
     return render(request, 'app_loja/finalizar_compra.html')
 
+@login_required 
 def minhas_compras(request):
     item_comprado = ItemCompra.objects.filter(compra__usuario=request.user)
     compras = Compras.objects.filter(usuario=request.user)
