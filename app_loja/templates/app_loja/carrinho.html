@@ -93,23 +93,6 @@
   <header class="bg-light border-bottom py-3 mb-4">
     <div class="container d-flex flex-wrap justify-content-between align-items-center">
       <h1 class="logo m-0">W.S <span>ECOMMERCE</span></h1>
-
-      <form class="d-flex search-bar" role="search">
-        <input class="form-control me-2" type="search" placeholder="Buscar produtos..." aria-label="Buscar" />
-        <button class="btn btn-outline-primary" type="submit">Buscar</button>
-      </form>
-
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Categorias
-        </button>
-        <ul class="dropdown-menu">
-          {% for categoria in categorias %}
-          <li><a class="dropdown-item" type="button" href="{% url 'home' categoria.id %}">{{ categoria.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
   </header>
 
   <div class="container mb-5">
