@@ -4,6 +4,8 @@ from .forms import AdicionarCarrinhoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from time import sleep
+from rest_framework import routers, serializers, viewsets
+from .serializers import *
 
 def home_geral(request):
     termo_busca = request.GET.get('buscar_produtos')
@@ -123,3 +125,10 @@ def minhas_compras(request):
     context = {'item_comprado':item_comprado, 'compras':compras}
 
     return render(request, 'app_loja/minhas_compras.html', context)
+
+
+#Viewsets API
+
+class ProdutosViewSet(viewsets.ModelViewSet):
+    queryset = Produtos.objects.all()
+    serializer_class = ProdutosSerializer

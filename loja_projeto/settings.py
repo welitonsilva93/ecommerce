@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_loja',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,11 @@ MEDIA_URL = '/media/'
 # settings.py
 LOGIN_REDIRECT_URL = 'home_geral'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
